@@ -74,7 +74,8 @@ def set_layer(obj, layer_idx):
     obj.layers[i] = (i == layer_idx)
 
 
-def add_object(object_dir, name, scale, loc, theta=0):
+# def add_object(object_dir, name, scale, loc, theta=0):
+def add_object(object_dir, obj):
   """
   Load an object from a file. We assume that in the directory object_dir, there
   is a file named "$name.blend" which contains a single object named "$name"
@@ -86,9 +87,16 @@ def add_object(object_dir, name, scale, loc, theta=0):
   """
   # First figure out how many of this object are already in the scene so we can
   # give the new object a unique name
+  name  = obj["type"]
+  x     = obj["x"]
+  y     = obj["y"]
+  z     = obj["z"]
+  scale = obj["scale"]
+  theta = obj["theta"]
+
   count = 0
-  for obj in bpy.data.objects:
-    if obj.name.startswith(name):
+  for obj_bpy in bpy.data.objects:
+    if obj_bpy.name.startswith(name):
       count += 1
 
   filename = os.path.join(object_dir, '%s.blend' % name, 'Object', name)
@@ -99,11 +107,10 @@ def add_object(object_dir, name, scale, loc, theta=0):
   bpy.data.objects[name].name = new_name
 
   # Set the new object as active, then rotate, scale, and translate it
-  x, y = loc
   bpy.context.scene.objects.active = bpy.data.objects[new_name]
   bpy.context.object.rotation_euler[2] = theta
   bpy.ops.transform.resize(value=(scale, scale, scale))
-  bpy.ops.transform.translate(value=(x, y, scale))
+  bpy.ops.transform.translate(value=(x, y, z+scale))
 
 
 def load_materials(material_dir):

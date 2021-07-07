@@ -1,7 +1,7 @@
 {
   "shapes": {
-    "cube": "SmoothCube_v2",
-    "sphere": "Sphere",
+    "cube": "smoothcube_v2",
+    "sphere": "sphere",
     "cylinder": "SmoothCylinder"
   },
   "colors": {
